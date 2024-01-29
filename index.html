@@ -135,9 +135,21 @@
     function submitForm(event) {
         event.preventDefault(); // Prevent the default form submission behavior
 
+        // Get form data
+        var formData = new FormData(document.getElementById('clockForm'));
+
+        // Convert form data to JSON
+        var jsonData = {};
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
         // Simulate form submission (you can replace this with your actual form submission logic)
         // For now, just display a success message
         displayMessage('Submission Successful!', 'success');
+        
+        // Log form data (you can remove this in your production code)
+        console.log(jsonData);
     }
 
     function selectClockType(clockType) {
