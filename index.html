@@ -52,6 +52,12 @@
             color: #fff;
         }
 
+        .clock-time {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
         label {
             display: block;
             margin: 15px 0 8px;
@@ -109,7 +115,7 @@
 </head>
 <body>
 
-<form method="post" id="clockForm" action="https://api.sheetmonkey.io/form/rQ1rbmUm36og31hk7hBDeH" onsubmit="submitForm(event)" >
+<form method="post" id="clockForm" onsubmit="submitForm(event)" action="https://api.sheetmonkey.io/form/rQ1rbmUm36og31hk7hBDeH">
     <h2>Clock In/Out Form</h2>
 
     <div class="clock-options">
@@ -117,11 +123,18 @@
         <div class="clock-option" data-type="clockOut" onclick="selectClockType('clockOut')">Clock Out</div>
     </div>
 
+    <!-- Display current time underneath the selected option -->
+    <div class="clock-time" id="selectedTime"></div>
+
     <label for="notes">Notes:</label>
     <textarea name="notes" placeholder="Notes" rows="4" cols="50"></textarea>
 
     <label for="datePicker">Date:</label>
-    <input name="datePicker" type="date" required>
+    <!-- Default date to the current date -->
+    <input name="datePicker" type="date" required value="<?php echo date('Y-m-d'); ?>">
+
+    <!-- Add hidden input for clock option -->
+    <input type="hidden" name="clockOption" id="clockOption" value="">
 
     <input type="submit" value="Submit">
 </form>
@@ -133,23 +146,47 @@
 
 <script>
     function submitForm(event) {
-       // event.preventDefault(); // Prevent the default form submission behavior
+        // ... (existing code)
 
-        // Get form data
-        var formData = new FormData(document.getElementById('clockForm'));
+        var clockInOption = document.querySelector('#clockForm .clock-option[data-type="clockIn"]').classList.contains('selected');
+        var clockOutOption = document.querySelector('#clockForm .clock-option[data-type="clockOut"]').classList.contains('selected');
 
-        // Convert form data to JSON
-        var jsonData = {};
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
-        });
+        var clockOptionInput = document.getElementById('clockOption');
+        var selectedTimeDiv = document.getElementById('selectedTime');
 
-        // Simulate form submission (you can replace this with your actual form submission logic)
-        // For now, just display a success message
-        displayMessage('Submission Successful!', 'success');
-        
-        // Log form data (you can remove this in your production code)
-        console.log(jsonData);
+        if (clockInOption) {
+            clockOptionInput.value = 'Clock In - ' + getCurrentTime();
+        } else if (clockOutOption) {
+            clockOptionInput.value = 'Clock Out - ' + getCurrentTime();
+        }
+
+        // Display current time underneath the selected option
+        selectedTimeDiv.textContent = 'Current Time: ' + getCurrentTime();
+
+        // ... (remaining code)
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var datePicker = document.querySelector('input[name="datePicker"]');
+        datePicker.value = getCurrentDate();
+    });
+
+    function getCurrentDate() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = (now.getMonth() + 1).toString().padStart(2, '0');
+        var day = now.getDate().toString().padStart(2, '0');
+
+        return year + '-' + month + '-' + day;
+    }
+
+    function getCurrentTime() {
+        var now = new Date();
+        var hours = now.getHours() % 12 || 12;
+        var minutes = now.getMinutes().toString().padStart(2, '0');
+        var ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+
+        return hours + ':' + minutes + ' ' + ampm;
     }
 
     function selectClockType(clockType) {
