@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock In/Out Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        #clockForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        .clock-options {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .clock-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+
+        .clock-option.selected {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
+            display: none;
+        }
+
+        .success {
+            color: #4caf50;
+        }
+
+        .error {
+            color: #ff5733;
+        }
+
+        .back-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<form method="post" id="clockForm" onsubmit="submitForm(event)" action="https://api.sheetmonkey.io/form/rQ1rbmUm36og31hk7hBDeH">
+    <h2>Clock In/Out Form</h2>
+
+    <div class="clock-options">
+        <div class="clock-option" data-type="clockIn" onclick="selectClockType('clockIn')">Clock In</div>
+        <div class="clock-option" data-type="clockOut" onclick="selectClockType('clockOut')">Clock Out</div>
+    </div>
+
+    <label for="notes">Notes:</label>
+    <textarea name="notes" placeholder="Notes" rows="4" cols="50"></textarea>
+
+    <label for="datePicker">Date:</label>
+    <input name="datePicker" type="date" required>
+
+    <input type="submit" value="Submit">
+</form>
+
+<div class="message" id="submissionMessage">
+    <!-- Message will be displayed here -->
+    <a href="index.html" class="back-link">Go Back to Home</a>
+</div>
+
+<script>
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Simulate form submission (you can replace this with your actual form submission logic)
+        // For now, just display a success message
+        displayMessage('Submission Successful!', 'success');
+    }
+
+    function selectClockType(clockType) {
+        var clockInOption = document.querySelector('#clockForm .clock-option[data-type="clockIn"]');
+        var clockOutOption = document.querySelector('#clockForm .clock-option[data-type="clockOut"]');
+
+        switch (clockType) {
+            case 'clockIn':
+                clockInOption.classList.add('selected');
+                clockOutOption.classList.remove('selected');
+                break;
+            case 'clockOut':
+                clockOutOption.classList.add('selected');
+                clockInOption.classList.remove('selected');
+                break;
+        }
+    }
+
+    function displayMessage(message, messageType) {
+        var messageDiv = document.getElementById('submissionMessage');
+        messageDiv.innerHTML = '<h2 class="' + messageType + '">' + message + '</h2>';
+        messageDiv.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
