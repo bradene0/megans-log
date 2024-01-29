@@ -133,8 +133,9 @@
     <!-- Default date to the current date -->
     <input name="datePicker" type="date" required value="<?php echo date('Y-m-d'); ?>">
 
-    <!-- Add hidden input for clock option -->
+    <!-- Add hidden inputs for clock option and clock time -->
     <input type="hidden" name="clockOption" id="clockOption" value="">
+    <input type="hidden" name="clockTime" id="clockTime" value="">
 
     <input type="submit" value="Submit">
 </form>
@@ -152,12 +153,15 @@
         var clockOutOption = document.querySelector('#clockForm .clock-option[data-type="clockOut"]').classList.contains('selected');
 
         var clockOptionInput = document.getElementById('clockOption');
+        var clockTimeInput = document.getElementById('clockTime');
         var selectedTimeDiv = document.getElementById('selectedTime');
 
         if (clockInOption) {
-            clockOptionInput.value = 'Clock In - ' + getCurrentTime();
+            clockOptionInput.value = 'Clock In';
+            clockTimeInput.value = getCurrentTime();
         } else if (clockOutOption) {
-            clockOptionInput.value = 'Clock Out - ' + getCurrentTime();
+            clockOptionInput.value = 'Clock Out';
+            clockTimeInput.value = getCurrentTime();
         }
 
         // Display current time underneath the selected option
