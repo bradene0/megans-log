@@ -133,6 +133,10 @@
     <!-- Default date to the current date -->
     <input name="datePicker" type="date" required value="<?php echo date('Y-m-d'); ?>">
 
+<!-- Add new input for total hours worked -->
+<label for="totalHours" id="totalHoursLabel" style="display: none;">Total Hours Worked:</label>
+<input type="text" name="totalHours" id="totalHours" placeholder="Enter total hours" style="display: none;">
+
     <!-- Add hidden inputs for clock option and clock time -->
     <input type="hidden" name="clockOption" id="clockOption" value="">
     <input type="hidden" name="clockTime" id="clockTime" value="">
@@ -147,7 +151,7 @@
 
 <script>
     function submitForm(event) {
-        // ... (existing code)
+        
 
         var clockInOption = document.querySelector('#clockForm .clock-option[data-type="clockIn"]').classList.contains('selected');
         var clockOutOption = document.querySelector('#clockForm .clock-option[data-type="clockOut"]').classList.contains('selected');
@@ -167,7 +171,10 @@
         // Display current time underneath the selected option
         selectedTimeDiv.textContent = 'Current Time: ' + getCurrentTime();
 
-        // ... (remaining code)
+        // Include total hours in the form data
+        var totalHours = totalHoursInput.value;
+
+        
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -196,18 +203,30 @@
     function selectClockType(clockType) {
         var clockInOption = document.querySelector('#clockForm .clock-option[data-type="clockIn"]');
         var clockOutOption = document.querySelector('#clockForm .clock-option[data-type="clockOut"]');
+        var totalHoursLabel = document.getElementById('totalHoursLabel');
+        var totalHoursInput = document.getElementById('totalHours');
 
         switch (clockType) {
             case 'clockIn':
                 clockInOption.classList.add('selected');
                 clockOutOption.classList.remove('selected');
+                totalHoursLabel.style.display = 'none';
+                totalHoursInput.style.display = 'none';
                 break;
             case 'clockOut':
                 clockOutOption.classList.add('selected');
                 clockInOption.classList.remove('selected');
+                totalHoursLabel.style.display = 'block';
+                totalHoursInput.style.display = 'block';
                 break;
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        selectClockType('clockIn'); // Assuming clockIn is the default state
+        var datePicker = document.querySelector('input[name="datePicker"]');
+        datePicker.value = getCurrentDate();
+    });
 
     function displayMessage(message, messageType) {
         var messageDiv = document.getElementById('submissionMessage');
